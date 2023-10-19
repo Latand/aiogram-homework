@@ -1,62 +1,57 @@
-Цей темплейт використовується для розробки Telegram ботів з використанням бібліотеки [`aiogram v3.0+`](https://github.com/aiogram/aiogram/tree/dev-3.x).
+# FSM Form Guide for Branch `2-fsm`
 
-## SQLAlchemy + Alembic
-В коді є приклади таблички User з використанням SQLAlchemy 2.0, та скрипти для алембіку (ініціалізація алембік, створення та застосування міграцій).
+Hello! In the `2-fsm` branch, you'll create a Telegram bot. This bot will ask users for some information step by step. After users provide all the details, the bot will show them everything they've entered in one message. We'll use pytest to check if your bot works correctly.
 
-Але, якщо ви з цими інструментами ніколи не працювали, то зверніться до документації і дізнайтесь про ці інструменти. 
-Також, в мене є англомовний [курс по цим інструментам на Udemy](https://www.udemy.com/course/sqlalchemy-alembic-bootcamp/?referralCode=E9099C5B5109EB747126).
+## Prerequisites
 
-![img.png](https://img-c.udemycdn.com/course/240x135/5320614_a8af_2.jpg)
+Before you begin, ensure that you have the necessary Python packages installed. Run the following command:
 
-### Для того, щоб почати використовувати:
-1. Скопіюйте `.env.dist` в `.env` і заповніть необхідні дані.
-2. Створіть нові хендлери.
-3. **Docker:**
-   1. Можете одразу запускати проєкт із Docker, а якщо в вас його немає, то [завантажте, та встановіть](https://docs.docker.com/get-docker/).
-   2. Запустіть проєкт з команди `docker-compose up`
-4. **Без Docker:**
-   1. Створіть [venv](https://docs.python.org/3/library/venv.html)
-   2. Встановить залежності із requirements.txt: `pip install -r requirements.txt --pre`
-   3. Запустіть проєкт з команди `python3 bot.py`
-
-
-### Як робити та реєструвати хендлери:
-Створюєте модуль `you_name.py` у папці `handlers`.
-
-Створюєте роутер у `you_name.py`.
-```python
-from aiogram import Router
-user_router = Router()
-```
-Можна робити декілька роутерів в одному модулі, та на кожний з них навішувати хендлери.
-Можна реєструвати хендлери декораторами:
-```python
-@user_router.message(commands=["start"])
-async def user_start(message):
-    await message.reply("Вітаю, звичайний користувач!")
+```bash
+pip install -r requirements.txt
 ```
 
-Заходимо у файл `bot.py` і додаємо всі роутери в нього:
-```python
-from tgbot.handlers.admin import admin_router
-from tgbot.handlers.echo import echo_router
-from tgbot.handlers.user import user_router
+## Steps to Implement the Form Logic
 
-...
+1. **Initialize Router**: Set up a router in your bot with the name `form_router`.
 
-async def main():
-   
-   ...
+2. **Begin Form Interaction**: 
+    - When a user inputs the command `/form`, prompt them with a message asking for their name.
 
-    for router in [
-        admin_router,
-        user_router,
-        ...,
-        echo_router,
+3. **Collect Name**: 
+    - Capture the name input by the user. Once received, prompt the user to enter their email.
 
-    ]:
-        dp.include_router(router)
+4. **Collect Email**: 
+    - Capture the email input by the user. After obtaining the email, ask the user to provide their phone number.
+
+5. **Collect Phone Number**: 
+    - Capture the phone number input by the user.
+
+6. **Display Collected Data**: 
+    - Once all data is collected, send a message back to the user with the following exact format:
+      ```
+      Hello! You entered the following data:
+      
+      Name: [User's Name]
+      Email: [User's Email]
+      Phone: [User's Phone Number]
+      ```
+      Remember, the text should match the above format exactly. However, the data (inside the brackets) will vary based on user input.
+
+7. **Clear Data**:
+    - After displaying the data to the user, ensure that the bot clears this information from its memory.
+
+## Running Tests
+
+Once you've implemented the functionality, it's time to test it:
+
+```bash
+pytest .\tests\fsm.py --html=report.html
 ```
 
-### Туторіали з aiogram v3
-Відосів поки що немає, але @Groosha вже почав робити [свій підручник](https://mastergroosha.github.io/aiogram-3-guide).
+Upon successful completion of the tests, the results will be available in the `report.html` file and also displayed in the console.
+
+> **Notes:**
+> - It's essential that the text format remains consistent with the provided template. Only the user's entered data should vary.
+> - The bot's responses and interactions should match the test cases provided in the `fsm.py` file. Ensure your code aligns with the expected outcomes of these tests.
+
+Happy coding!
