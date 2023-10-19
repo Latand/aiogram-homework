@@ -50,7 +50,7 @@ pytest .\tests\fsm.py --html=report.html
 
 Upon successful completion of the tests, the results will be available in the `report.html` file and also displayed in the console.
 
-> **Notes:**
+> **Note**
 > - It's essential that the text format remains consistent with the provided template. Only the user's entered data should vary.
 > - The bot's responses and interactions should match the test cases provided in the `fsm.py` file. Ensure your code aligns with the expected outcomes of these tests.
 
