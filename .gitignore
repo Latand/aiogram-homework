@@ -62,5 +62,6 @@ venv.bak/
 .idea/
 .env
 cache/
-/report.html
-/assets/style.css
+report.html
+assets/*
+solutions/*
