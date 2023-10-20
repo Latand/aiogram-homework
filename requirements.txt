@@ -7,3 +7,4 @@ pytest
 git+https://github.com/Latand/aiogram-mock#egg=aiogram_mock
 faker
 pytest-html
+redis
