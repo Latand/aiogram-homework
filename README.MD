@@ -1,57 +1,93 @@
-# FSM Form Guide for Branch `2-fsm`
+# Guide for Branch `3-inline-buttons`
+Hello! In the `inline-buttons` branch, you'll build on your Telegram bot capabilities. This bot will provide users with interactive inline buttons to select different options. Depending on the theme (online shop or educational courses), users can navigate and select appropriate categories.
 
-Hello! In the `2-fsm` branch, you'll create a Telegram bot. This bot will ask users for some information step by step. After users provide all the details, the bot will show them everything they've entered in one message. We'll use pytest to check if your bot works correctly.
+![img.png](img.png)
 
 ## Prerequisites
 
-Before you begin, ensure that you have the necessary Python packages installed. Run the following command:
+Before diving in, ensure you've set up the required Python packages. Use the command:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Steps to Implement the Form Logic
+## Task 1
 
-1. **Initialize Router**: Set up a router in your bot with the name `form_router`.
+This tasks tests your ability to properly build inline markups with numbers of buttons per row.
 
-2. **Begin Form Interaction**: 
-    - When a user inputs the command `/form`, prompt them with a message asking for their name.
+### Steps to Implement the Inline Button Logic
 
-3. **Collect Name**: 
-    - Capture the name input by the user. Once received, prompt the user to enter their email.
+1. **Initialize Router**: Initiate a router in your bot code, named `inline_buttons_router`.
 
-4. **Collect Email**: 
-    - Capture the email input by the user. After obtaining the email, ask the user to provide their phone number.
+2. **Define Callback Data**: 
+    - Create a callback data factory **with the prefix "action"** to manage user selections.
 
-5. **Collect Phone Number**: 
-    - Capture the phone number input by the user.
+3. **Create Online Shop Inline Keyboard**: 
+    - Define a function `shop_kb()` to create an inline keyboard layout for the online shop theme. The layout should be 2 buttons per row.
 
-6. **Display Collected Data**: 
-    - Once all data is collected, send a message back to the user with the following exact format:
-      ```
-      Hello! You entered the following data:
-      
-      Name: [User's Name]
-      Email: [User's Email]
-      Phone: [User's Phone Number]
-      ```
-      Remember, the text should match the above format exactly. However, the data (inside the brackets) will vary based on user input.
+4. **Create Educational Courses Inline Keyboard**:
+    - Similarly, define a function `courses_kb()`, but this time for the educational courses theme. Organize the layout with 3 buttons per row.
 
-7. **Clear Data**:
-    - After displaying the data to the user, ensure that the bot clears this information from its memory.
+5. **Handler Functions**: 
+    - Implement handler functions (`shop_buttons_handler` and `courses_buttons_handler`) for the commands `/shop_buttons` and `/courses_buttons`, respectively. Each handler should send a message presenting its respective inline keyboard to users.
+
+### Buttons Texts
+
+You can use these objects to create the inline buttons:
+```python
+SHOP_BUTTONS = [
+    'Electronics',
+    'Clothing',
+    'Footwear',
+    'Books',
+    'Toys',
+    'Back to Main Menu',
+]
+
+COURSES_BUTTONS = [
+    'Programming',
+    'Design',
+    'Marketing',
+    'Languages',
+    'Photography',
+    'Course Catalog',
+    'Back to Main Menu',
+]
+```
+
+
+### Interacting with the Bot
+
+Once you've implemented the bot's functionalities:
+
+- Use `/shop_buttons` to view and interact with the online shop categories.
+- Use `/courses_buttons` to explore educational course offerings.
+
+
+## Task 2
+
+This task tests your ability to properly handle user selections and send appropriate responses, with message editing.
+
+![img_1.png](img_1.png)
+
+
+![img_2.png](img_2.png)
+
+![img_3.png](img_3.png)
+![img_4.png](img_4.png)
 
 ## Running Tests
 
-Once you've implemented the functionality, it's time to test it:
+After you've set up the bot's inline button logic, it's crucial to test it:
 
 ```bash
-pytest .\tests\fsm.py --html=report.html
+pytest .\tests\inline_buttons.py --html=report.html
 ```
 
-Upon successful completion of the tests, the results will be available in the `report.html` file and also displayed in the console.
+Post testing, you can view the outcomes in the `report.html` file. Additionally, the results will display in the console.
 
 > **Note**
-> - It's essential that the text format remains consistent with the provided template. Only the user's entered data should vary.
-> - The bot's responses and interactions should match the test cases provided in the `fsm.py` file. Ensure your code aligns with the expected outcomes of these tests.
+> - Make sure the text displayed matches the provided themes and categories. The options provided to the user should be consistent with the two proposed themes.
+> - Align your bot's responses with the expected outcomes detailed in the `inline_buttons.py` test cases.
 
-Happy coding!
+Keep up the good work and happy coding!
