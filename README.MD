@@ -68,8 +68,9 @@ Once you've implemented the bot's functionalities:
 
 This task tests your ability to properly handle user selections and send appropriate responses, with message editing.
 
-![img_1.png](img_1.png)
+Implement this:
 
+![img_1.png](img_1.png)
 
 ![img_2.png](img_2.png)
 
