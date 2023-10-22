@@ -13,7 +13,7 @@ from tgbot.services import broadcaster
 
 
 async def on_startup(bot: Bot, admin_ids: list[int]):
-    await broadcaster.broadcast(bot, admin_ids, "Бот був запущений")
+    await broadcaster.broadcast(bot, admin_ids, "Bot started!")
 
 
 def register_global_middlewares(dp: Dispatcher, config: Config, session_pool=None):
@@ -29,7 +29,6 @@ def register_global_middlewares(dp: Dispatcher, config: Config, session_pool=Non
     """
     middleware_types = [
         ConfigMiddleware(config),
-        # DatabaseMiddleware(session_pool),
     ]
 
     for middleware_type in middleware_types:
@@ -83,20 +82,35 @@ def get_storage(config):
         return MemoryStorage()
 
 
+# Import the required asynchronous function
 async def main():
+    # Initialize log settings
     setup_logging()
 
+    # Load configuration settings from the .env file
     config = load_config(".env")
+
+    # Access storage data as specified by the configuration (Memory)
     storage = get_storage(config)
 
+    # Instantiate a Bot object with the specified token unique to the bot
+    # The parse mode is set to HTML to render text messages in HTML format
     bot = Bot(token=config.tg_bot.token, parse_mode="HTML")
+
+    # Instantiate a Dispatcher object to manage and dispatch updates received from the bot
     dp = Dispatcher(storage=storage)
 
+    # Include the routers in the dispatcher instance
     dp.include_routers(*routers_list)
 
+    # Register the middlewares in the global scope of the dispatcher instance
     register_global_middlewares(dp, config)
 
+    # Execute the on_startup function asynchronously to do custom setup at the start of the bot's runtime
     await on_startup(bot, config.tg_bot.admin_ids)
+
+    # Start the bot's polling service asynchronously
+    # It constantly checks for new updates from users and delivers them to the bot
     await dp.start_polling(bot)
 
 
@@ -104,4 +118,4 @@ if __name__ == "__main__":
     try:
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
-        logging.error("Бот був вимкнений!")
+        logging.error("Bot was turned off!")
